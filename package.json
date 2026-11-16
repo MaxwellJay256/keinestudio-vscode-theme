@@ -1,0 +1,21 @@
+{
+  "name": "keinestudio-dark",
+  "displayName": "KeineStudio Dark",
+  "description": "KeineStudio Dark color theme for Visual Studio Code",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.146.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "KeineStudio Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/keinestudio-dark-color-theme.json"
+      }
+    ]
+  }
+}
