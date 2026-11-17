@@ -3,7 +3,11 @@
   "displayName": "KeineStudio Theme",
   "description": "KeineStudio color theme (Dark/Light) for Visual Studio Code",
   "publisher": "MaxwellJay256",
-  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MaxwellJay256/keinestudio-vscode-theme.git"
+  },
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.146.0"
   },
