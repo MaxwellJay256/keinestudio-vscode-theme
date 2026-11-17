@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { copyFile, mkdir, mkdtemp, readFile, rm, unlink, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, mkdtemp, readFile, realpath, rm, unlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -111,7 +111,7 @@ test("命令行检查不依赖当前工作目录", () => {
 });
 
 test("检查模式拒绝过期或缺失文件且不写入；生成命令可从零重建", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "keinestudio-theme-test-"));
+  const directory = await realpath(await mkdtemp(join(tmpdir(), "keinestudio-theme-test-")));
   try {
     const scripts = join(directory, "scripts");
     const themes = join(directory, "themes");

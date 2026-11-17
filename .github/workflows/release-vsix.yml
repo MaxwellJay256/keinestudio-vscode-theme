@@ -1,0 +1,51 @@
+name: Release VSIX
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Get Release version
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          node -e '
+            const { version } = require("./package.json");
+            const expected = `v${version}`;
+            if (process.env.RELEASE_TAG !== expected) {
+              console.error(`Release tag 必须为 ${expected}，实际为 ${process.env.RELEASE_TAG}`);
+              process.exit(1);
+            }
+          '
+
+      - name: Check themes & run tests
+        run: |
+          npm run check:themes
+          npm test
+
+      - name: Pack VSIX
+        run: npx --yes @vscode/vsce@4.1.1 package --out "keinestudio-theme-${RELEASE_TAG#v}.vsix"
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+
+      - name: Upload Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$RELEASE_TAG" "keinestudio-theme-${RELEASE_TAG#v}.vsix" --clobber
